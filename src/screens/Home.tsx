@@ -1,12 +1,12 @@
+/* eslint-disable react/no-unstable-nested-components */
 import React, {useState} from 'react';
-import {View, Text, FlatList, ScrollView,} from 'react-native';
+import {View, Text, FlatList} from 'react-native';
 import styles from '../styles/Home.style';
 import {NativeStackScreenProps} from '@react-navigation/native-stack';
 import {RootStackParamList} from '../navigations/types';
 import Menu from '../components/Menu';
 import CategoryButtons from '../components/CategoryButton';
 import ProductCard from '../components/ProductCard';
-
 
 type HomeScreenProps = NativeStackScreenProps<RootStackParamList, 'Home'>;
 
@@ -100,30 +100,33 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
   return (
     <View style={styles.container}>
       <Menu goToCart={() => navigation.navigate('Cart')} />
-      <ScrollView style={styles.mt}>
-        <View style={styles.topHeading}>
-          <Text style={[styles.exploreText]}>Explore</Text>
-          <Text style={styles.styleText}>Your New Style</Text>
-        </View>
-       
-        
-        <View style={styles.flatlist}>
-          <FlatList
-            data={categories}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            keyExtractor={item => item.id}
-            renderItem={({item}) => (
-              <CategoryButtons
-                selectedCategory={selectedCategory}
-                setSelectedCategory={setSelectedCategory}
-                name={item.name}
-              />
-            )}
-          />
-        </View>
+      <View style={styles.mt}>
         <View style={styles.CardsDiv}>
           <FlatList
+            ListHeaderComponent={() => (
+              <>
+                <View style={styles.topHeading}>
+                  <Text style={[styles.exploreText]}>Explore</Text>
+                  <Text style={styles.styleText}>Your New Style</Text>
+                </View>
+
+                <View style={styles.flatlist}>
+                  <FlatList
+                    data={categories}
+                    horizontal={true}
+                    showsHorizontalScrollIndicator={false}
+                    keyExtractor={item => item.id}
+                    renderItem={({item}) => (
+                      <CategoryButtons
+                        selectedCategory={selectedCategory}
+                        setSelectedCategory={setSelectedCategory}
+                        name={item.name}
+                      />
+                    )}
+                  />
+                </View>
+              </>
+            )}
             data={cardData}
             // horizontal
             scrollEnabled={true}
@@ -142,7 +145,7 @@ const Home: React.FC<HomeScreenProps> = ({navigation}) => {
             )}
           />
         </View>
-      </ScrollView>
+      </View>
     </View>
   );
 };
